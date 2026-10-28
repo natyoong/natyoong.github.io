@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Nathaniel Yoong, FPGA and firmware engineer building on Xilinx Zynq SoCs.">
+<title>Nathaniel Yoong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow column like a lab notebook; the experience timeline is drawn as a copper PCB trace with vias. Deliberately dark-only. */
+:root {
+  --bg: #0d1117;          /* board substrate, blue-black */
+  --panel: #151b24;       /* raised surface */
+  --line: #262f3d;        /* silkscreen-dim rules */
+  --fg: #e6e9ef;
+  --muted: #8d97a8;
+  --copper: #d4955a;      /* trace copper, the one accent */
+  --copper-dim: #6e4d31;
+  --ph: #2b3442;          /* placeholder fill */
+  --f-display: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.6;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; border-radius: 4px; }
+
+.wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* nav */
+header.nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.brand { font-family: var(--f-display); font-weight: 700; letter-spacing: .04em; text-decoration: none; }
+.brand span { color: var(--copper); }
+.nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+.nav a.l { font-family: var(--f-mono); font-size: 13px; color: var(--muted); text-decoration: none; padding: 4px 8px; border-radius: 4px; }
+.nav a.l:hover { color: var(--fg); background: var(--panel); }
+@media (max-width: 560px) { .nav ul li.opt { display: none; } }
+
+/* hero */
+.hero { padding-block: 64px 40px; display: grid; gap: 24px; }
+.hero-top { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.avatar {
+  width: 96px; height: 96px; border-radius: 50%; flex: none;
+  display: grid; place-items: center;
+  background: var(--ph); border: 1px dashed var(--muted);
+  font-family: var(--f-display); font-size: 28px; font-weight: 600; color: var(--muted);
+}
+.hero h1 { font-family: var(--f-display); font-size: clamp(34px, 7vw, 52px); line-height: 1.05; margin: 0; letter-spacing: .01em; text-wrap: balance; }
+.role { font-family: var(--f-mono); font-size: 14px; color: var(--copper); margin: 6px 0 0; letter-spacing: .02em; }
+.lede { font-size: 18px; color: var(--fg); max-width: 62ch; margin: 0; }
+.lede + p { color: var(--muted); max-width: 62ch; margin: 0; }
+.wave { width: 100%; max-width: 100%; height: 34px; display: block; }
+.wave path { fill: none; stroke: var(--copper-dim); stroke-width: 1.5; }
+.wave text { fill: var(--muted); font-family: var(--f-mono); font-size: 10px; }
+
+.links { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--f-mono); font-size: 13px; text-decoration: none;
+  padding: 8px 14px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--fg);
+}
+.btn:hover { border-color: var(--copper-dim); }
+.btn.primary { background: var(--copper); color: #1a1006; border-color: var(--copper); font-weight: 500; }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn svg { width: 15px; height: 15px; fill: currentColor; }
+
+/* sections */
+section.block { padding-block: 40px; border-top: 1px solid var(--line); }
+.label { font-family: var(--f-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .14em; color: var(--copper); margin: 0 0 6px; }
+h2 { font-family: var(--f-display); font-size: clamp(26px, 5vw, 34px); margin: 0 0 8px; line-height: 1.15; text-wrap: balance; }
+.sub { color: var(--muted); margin: 0 0 28px; max-width: 62ch; }
+
+/* placeholder marker */
+.todo { font-family: var(--f-mono); font-size: 12px; color: var(--copper); background: color-mix(in srgb, var(--copper) 12%, transparent); padding: 1px 6px; border-radius: 3px; white-space: nowrap; }
+
+/* timeline as a copper trace */
+.timeline { list-style: none; margin: 0; padding: 0 0 0 28px; position: relative; display: grid; gap: 32px; }
+.timeline::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: var(--copper-dim); }
+.timeline > li { position: relative; }
+.timeline > li::before {
+  content: ""; position: absolute; left: -28px; top: 6px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--bg); border: 3px solid var(--copper);
+}
+.timeline > li.now::before { background: var(--copper); }
+.when { font-family: var(--f-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.timeline h3 { font-family: var(--f-display); font-size: 20px; margin: 2px 0 0; line-height: 1.25; }
+.org { color: var(--copper); font-size: 15px; margin: 2px 0 8px; }
+.timeline ul.pts { margin: 0; padding-left: 18px; color: #c4cad5; display: grid; gap: 4px; }
+.timeline ul.pts li::marker { color: var(--copper-dim); }
+
+/* projects */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 20px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+.card:hover { border-color: var(--copper-dim); }
+.shot {
+  aspect-ratio: 16 / 9; max-width: 100%;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 10px, color-mix(in srgb, var(--muted) 8%, transparent) 10px 11px),
+    var(--ph);
+  display: grid; place-items: center; text-align: center; padding: 12px;
+  font-family: var(--f-mono); font-size: 12px; color: var(--muted);
+  border-bottom: 1px solid var(--line);
+}
+.card .body { padding: 16px 18px 18px; display: grid; gap: 8px; align-content: start; flex: 1; }
+.card .yr { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.card h3 { font-family: var(--f-display); font-size: 19px; margin: 0; line-height: 1.25; }
+.card p { margin: 0; color: #c4cad5; font-size: 15px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.tag { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 1px 7px; }
+.card.empty { border-style: dashed; background: transparent; }
+
+/* education + awards */
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 28px; }
+.edu h3 { font-family: var(--f-display); font-size: 19px; margin: 0; }
+.edu p { margin: 2px 0 0; color: var(--muted); }
+.edu ul { margin: 8px 0 0; padding-left: 18px; color: #c4cad5; }
+.edu > div + div { margin-top: 24px; }
+.awards { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.awards li { display: grid; grid-template-columns: 72px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.awards li:first-child { padding-top: 0; }
+.awards .y { font-family: var(--f-mono); font-size: 13px; color: var(--copper); font-variant-numeric: tabular-nums; }
+
+/* skills */
+.skillgroups { display: grid; gap: 22px; }
+.skillgroups h3 { font-family: var(--f-mono); font-size: 13px; font-weight: 500; color: var(--muted); margin: 0 0 10px; text-transform: uppercase; letter-spacing: .1em; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-family: var(--f-mono); font-size: 13px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; }
+
+/* contact */
+.contact { display: grid; gap: 16px; }
+.mail { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.mail code { font-family: var(--f-mono); font-size: 16px; background: var(--panel); border: 1px solid var(--line); padding: 6px 10px; border-radius: 6px; user-select: all; }
+footer { padding-block: 32px 48px; border-top: 1px solid var(--line); color: var(--muted); font-family: var(--f-mono); font-size: 12px; }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">NY<span>_</span></a>
+    <nav aria-label="Sections">
+      <ul>
+        <li class="opt"><a class="l" href="#about">about</a></li>
+        <li><a class="l" href="#experience">experience</a></li>
+        <li><a class="l" href="#projects">projects</a></li>
+        <li class="opt"><a class="l" href="#skills">skills</a></li>
+        <li><a class="l" href="#contact">contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+  <section class="hero" id="about">
+    <div class="hero-top">
+      <div class="avatar" title="Placeholder: add your photo">NY</div>
+      <div>
+        <h1 data-scramble>Nathaniel Yoong</h1>
+        <p class="role">FPGA &amp; Firmware Engineer · DSO National Laboratories</p>
+      </div>
+    </div>
+
+    <svg class="wave" viewBox="0 0 600 34" preserveAspectRatio="none" aria-hidden="true">
+      <text x="0" y="12">clk</text>
+      <path d="M30 26 H50 V8 H70 V26 H90 V8 H110 V26 H130 V8 H150 V26 H170 V8 H190 V26 H210 V8 H230 V26 H250 V8 H270 V26 H290 V8 H310 V26 H330 V8 H350 V26 H370 V8 H390 V26 H410 V8 H430 V26 H450 V8 H470 V26 H490 V8 H510 V26 H530 V8 H550 V26 H570 V8 H590 V26 H600"/>
+    </svg>
+
+    <p class="lede">I build on Xilinx Zynq SoCs end to end: VHDL RTL in the programmable logic, IP integration in Vivado block designs, and bare-metal C on the Arm cores, with AXI DMA moving data between PS and PL. My focus is continuous, high-throughput data acquisition and DSP streaming.</p>
+    <p>2+ years full-time at DSO National Laboratories, after FPGA and hardware internships there since 2018. NTU EEE Honours (Distinction) and Temasek Polytechnic silver medallist. I'm most interested in FPGA acceleration and low-latency systems.</p>
+
+    <div class="links">
+      <a class="btn primary" href="#contact">Read resume</a>
+      <a class="btn" href="#" title="Placeholder: add your GitHub link">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub <span class="todo">add link</span>
+      </a>
+      <a class="btn" href="https://www.linkedin.com/in/nathaniel-yoong-28499628a" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.15C0 .52.52 0 1.18 0h13.64C15.48 0 16 .52 16 1.15v13.7c0 .63-.52 1.15-1.18 1.15H1.18C.52 16 0 15.48 0 14.85V1.15zm4.94 12.25V6.17H2.54v7.23h2.4zM3.74 5.18c.84 0 1.36-.55 1.36-1.25-.02-.71-.52-1.25-1.34-1.25-.82 0-1.36.54-1.36 1.25 0 .7.52 1.25 1.33 1.25h.01zm4.91 8.22V9.36c0-.22.02-.43.08-.58.17-.43.57-.88 1.23-.88.87 0 1.22.66 1.22 1.64v3.86h2.4V9.25c0-2.22-1.18-3.26-2.76-3.26-1.28 0-1.84.71-2.16 1.2v.03h-.02l.02-.03V6.17h-2.4c.03.68 0 7.23 0 7.23h2.4z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </section>
+
+  <section class="block" id="experience">
+    <p class="label">// experience</p>
+    <h2 data-scramble>Where I've worked</h2>
+    <p class="sub">All with the Guided Systems Division at DSO National Laboratories, from hardware testing intern to full-time engineer.</p>
+
+    <ol class="timeline">
+      <li class="now">
+        <div class="when">Jul 2024 – Present</div>
+        <h3>Hardware &amp; Firmware Engineer</h3>
+        <div class="org">DSO National Laboratories · Guided Systems Division</div>
+        <ul class="pts">
+          <li>Architected and implemented VHDL RTL for a continuous, high-throughput data acquisition and DSP streaming pipeline, using AXI4-Stream with buffering and backpressure to sustain throughput</li>
+          <li>Built AXI DMA data paths into DDR for real-time processing, alongside QSPI flash and eMMC storage</li>
+          <li>Closed timing on my own designs by reading static timing reports, tracing failing paths and reworking the RTL</li>
+          <li>Designed the schematic for a custom Zynq-7000 board with an onboard Ethernet PHY, brought it up and implemented bare-metal PS Ethernet at 100 Mbps</li>
+          <li>Debugged boards and designs with oscilloscope and JTAG; integrated FPGA, embedded C and PetaLinux with software and systems teams</li>
+          <li>Automated Vivado/Vitis builds with TCL, and helped pilot AI-assisted workflows for RTL design, debugging and documentation</li>
+        </ul>
+      </li>
+      <li>
+        <div class="when">May 2023 – Aug 2023</div>
+        <h3>FPGA Intern</h3>
+        <div class="org">DSO National Laboratories · Guided Systems Division</div>
+        <ul class="pts">
+          <li>Implemented real-time CLAHE image enhancement with Vivado HLS on Zynq UltraScale+, optimised to meet throughput and latency targets</li>
+          <li>Wrote C to read and write DDR3 as part of the processing pipeline</li>
+        </ul>
+      </li>
+      <li>
+        <div class="when">May 2022 – Dec 2022</div>
+        <h3>FPGA Intern</h3>
+        <div class="org">DSO National Laboratories · Guided Systems Division</div>
+        <ul class="pts">
+          <li>Designed VHDL RTL for raw data flow and interfacing on an FMCW radar system, from architecture through field trials</li>
+          <li>Worked with AXI4-Stream, UART, RS422 and FFT-based processing, and turned collected radar data into SAR images</li>
+        </ul>
+      </li>
+      <li>
+        <div class="when">Oct 2018 – Mar 2019</div>
+        <h3>Hardware Testing Intern</h3>
+        <div class="org">DSO National Laboratories · Guided Systems Division</div>
+        <ul class="pts">
+          <li>Tested and validated VITA 74 processor cards across USB, UART, SPI, PCIe, CAN and I2C, characterising CPU, GPU, SSD and USB performance on a test jig</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+
+  <section class="block" id="projects">
+    <p class="label">// projects</p>
+    <h2 data-scramble>Things I've built</h2>
+    <p class="sub">Boards, pipelines and prototypes. Photos to come.</p>
+
+    <div class="grid">
+      <article class="card">
+        <div class="shot">Photo placeholder<br>the custom board, assembled</div>
+        <div class="body">
+          <span class="yr">2024 – present · DSO</span>
+          <h3>Custom Zynq-7000 Board</h3>
+          <p>Designed the schematic with high-speed signal integrity in mind and an onboard Ethernet PHY, then brought the board up and got bare-metal PS Ethernet running at 100 Mbps.</p>
+          <div class="tags"><span class="tag">Zynq-7000</span><span class="tag">Schematic</span><span class="tag">Ethernet PHY</span><span class="tag">Bare-metal C</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="shot">Photo placeholder<br>block diagram of the pipeline</div>
+        <div class="body">
+          <span class="yr">2024 – present · DSO</span>
+          <h3>Streaming Acquisition &amp; DSP Pipeline</h3>
+          <p>Continuous, high-throughput acquisition in VHDL. AXI4-Stream with buffering and backpressure, AXI DMA into DDR, plus QSPI flash and eMMC storage.</p>
+          <div class="tags"><span class="tag">VHDL</span><span class="tag">AXI4-Stream</span><span class="tag">AXI DMA</span><span class="tag">DDR</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="shot">Photo placeholder<br>before / after CLAHE frames</div>
+        <div class="body">
+          <span class="yr">2023 · Internship</span>
+          <h3>Real-time CLAHE on FPGA</h3>
+          <p>Contrast-limited adaptive histogram equalisation in Vivado HLS on Zynq UltraScale+, tuned to hit real-time throughput and latency, with C handling DDR3 reads and writes.</p>
+          <div class="tags"><span class="tag">Vivado HLS</span><span class="tag">Zynq UltraScale+</span><span class="tag">Image processing</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="shot">Photo placeholder<br>a SAR image or the field setup</div>
+        <div class="body">
+          <span class="yr">2022 · Internship</span>
+          <h3>FMCW Radar to SAR Imaging</h3>
+          <p>VHDL for raw data flow and interfacing on an FMCW radar, taken from architecture to field trials, then processing the collected data into synthetic aperture radar images.</p>
+          <div class="tags"><span class="tag">VHDL</span><span class="tag">FFT</span><span class="tag">RS422</span><span class="tag">SAR</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="shot">Photo placeholder<br>team at the competition</div>
+        <div class="body">
+          <span class="yr">2023 · NTU</span>
+          <h3>Design &amp; Innovation Project, Champion</h3>
+          <p>Led the team that won NTU's Design &amp; Innovation Project Competition. <span class="todo">add what you built</span></p>
+          <div class="tags"><span class="tag">Team lead</span><span class="tag todo">tools</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="shot">Photo placeholder<br>aquaponics farm, Philippines</div>
+        <div class="body">
+          <span class="yr">2019 · Philippines</span>
+          <h3>Smart Aquaponics Farm</h3>
+          <p>Youth Expedition Project with Temasek Polytechnic. Sensors for temperature and humidity reporting to a local university over Raspberry Pi, and servo-driven valves for automated watering.</p>
+          <div class="tags"><span class="tag">NodeMCU</span><span class="tag">Arduino</span><span class="tag">Raspberry Pi</span><span class="tag">IoT</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block" id="education">
+    <p class="label">// education</p>
+    <h2 data-scramble>Education &amp; awards</h2>
+    <div class="two" style="margin-top:24px">
+      <div class="edu">
+        <div>
+          <h3>Nanyang Technological University</h3>
+          <p>B.Eng. Electrical &amp; Electronic Engineering · 2021 – 2024</p>
+          <ul><li>Honours (Distinction)</li><li>Specialised in Info-communications</li></ul>
+        </div>
+        <div>
+          <h3>Temasek Polytechnic</h3>
+          <p>Diploma in Electronics · 2016 – 2019</p>
+          <ul><li>CGPA 3.90 / 4.00, Diploma with Merit</li><li>Cohort Silver Medalist</li></ul>
+        </div>
+      </div>
+      <ul class="awards">
+        <li><span class="y">2023</span><span>Champion Team (Team Leader), NTU Design &amp; Innovation Project Competition</span></li>
+        <li><span class="y">2022–23</span><span>DSO SOAR Scholarship</span></li>
+        <li><span class="y">2018/19</span><span>Cohort Silver Medalist, TP Diploma in Electronics</span></li>
+        <li><span class="y">2018</span><span>Bronze, WorldSkills Singapore, Industrial Electronics</span></li>
+        <li><span class="y">2018</span><span>Gold, TP Electronic Design Competition</span></li>
+        <li><span class="y">2017–19</span><span>DSO Diploma Scholarship</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" id="skills">
+    <p class="label">// skills</p>
+    <h2 data-scramble>Toolbox</h2>
+    <div class="skillgroups" style="margin-top:24px">
+      <div><h3>FPGA design</h3><div class="chips"><span class="chip">VHDL RTL</span><span class="chip">AXI4-Stream</span><span class="chip">AXI DMA</span><span class="chip">PS–PL integration</span><span class="chip">DSP pipelines</span><span class="chip">Buffering &amp; backpressure</span></div></div>
+      <div><h3>Implementation &amp; timing</h3><div class="chips"><span class="chip">Vivado</span><span class="chip">Vitis</span><span class="chip">Vitis HLS</span><span class="chip">Static timing analysis</span><span class="chip">Timing closure</span></div></div>
+      <div><h3>Bring-up &amp; debug</h3><div class="chips"><span class="chip">Lab bring-up</span><span class="chip">Oscilloscope</span><span class="chip">JTAG</span><span class="chip">XSim</span></div></div>
+      <div><h3>Memory &amp; interfaces</h3><div class="chips"><span class="chip">DDR</span><span class="chip">QSPI flash</span><span class="chip">eMMC</span><span class="chip">Ethernet</span><span class="chip">SPI</span><span class="chip">UART</span><span class="chip">I2C</span></div></div>
+      <div><h3>Software &amp; scripting</h3><div class="chips"><span class="chip">C (bare-metal)</span><span class="chip">C++</span><span class="chip">PetaLinux</span><span class="chip">Python</span><span class="chip">TCL</span><span class="chip">Git</span></div></div>
+      <div><h3>Hardware design</h3><div class="chips"><span class="chip">Schematic design</span><span class="chip">Signal integrity</span></div></div>
+    </div>
+  </section>
+
+  <section class="block contact" id="contact">
+    <p class="label">// contact</p>
+    <h2 data-scramble>Get in touch</h2>
+    <p class="sub" style="margin:0">Email is the quickest way to reach me. My full resume is linked below.</p>
+    <div class="mail">
+      <code id="email">natyoong@gmail.com</code>
+      <button class="btn" id="copy" type="button">Copy email</button>
+    </div>
+    <div class="links">
+      <a class="btn primary" href="#" title="Placeholder: link your resume PDF">Resume (PDF)</a>
+      <span class="todo" style="align-self:center">link resume PDF</span>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">2026 · Built by Nathaniel Yoong</div>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var glyphs = '01<>/{}[]#$%&*+=?_';
+  function scramble(el) {
+    var final = el.dataset.final || (el.dataset.final = el.textContent);
+    var frame = 0, total = 18;
+    function tick() {
+      frame++;
+      var reveal = Math.floor(final.length * frame / total);
+      var out = '';
+      for (var i = 0; i < final.length; i++) {
+        var c = final[i];
+        out += (i < reveal || c === ' ') ? c : glyphs[Math.floor(Math.random() * glyphs.length)];
+      }
+      el.textContent = out;
+      if (frame < total) requestAnimationFrame(tick); else el.textContent = final;
+    }
+    tick();
+  }
+  if (!reduce) {
+    document.querySelectorAll('[data-scramble]').forEach(function (el, i) {
+      el.dataset.final = el.textContent;
+      setTimeout(function () { scramble(el); }, i * 90);
+      el.addEventListener('mouseenter', function () { scramble(el); });
+    });
+  }
+  var btn = document.getElementById('copy');
+  btn.addEventListener('click', function () {
+    var text = document.getElementById('email').textContent;
+    function done() { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy email'; }, 1600); }
+    function fallback() {
+      var r = document.createRange(); r.selectNodeContents(document.getElementById('email'));
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent = 'Selected, press Ctrl+C';
+    }
+    try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
