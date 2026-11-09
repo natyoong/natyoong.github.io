@@ -120,7 +120,8 @@ h2 { font-family: var(--f-display); font-size: clamp(26px, 5vw, 34px); margin: 0
 .timeline ul.pts li::marker { color: var(--copper-dim); }
 
 /* projects */
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 20px; }
+.grid { columns: 2 300px; column-gap: 20px; }
+.grid > .card { break-inside: avoid; width: 100%; margin-bottom: 20px; }
 .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
 .card:hover { border-color: var(--copper-dim); }
 .shot {
@@ -144,6 +145,10 @@ h2 { font-family: var(--f-display); font-size: clamp(26px, 5vw, 34px); margin: 0
 .gallery { background: var(--ph); border-bottom: 1px solid var(--line); }
 .gallery .main-link { display: block; }
 .gallery .main { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; object-fit: cover; height: auto; }
+.gallery .main-video { display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; background: var(--bg); }
+.gallery.square .main, .gallery.square .main-video { aspect-ratio: 1 / 1; }
+.thumbs button { position: relative; }
+.thumbs button.is-video::after { content: "\25B6"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; color: var(--fg); text-shadow: 0 1px 3px rgba(0,0,0,.8); pointer-events: none; }
 .thumbs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; padding: 8px; background: var(--panel); }
 .thumbs button { padding: 0; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: var(--ph); cursor: pointer; opacity: .55; transition: opacity .15s, border-color .15s; }
 .thumbs button:hover { opacity: .85; }
@@ -282,29 +287,9 @@ footer { padding-block: 32px 48px; border-top: 1px solid var(--line); color: var
   <section class="block" id="projects">
     <p class="label">// projects</p>
     <h2 data-scramble>Things I've built</h2>
-    <p class="sub">Boards, pipelines and prototypes. Photos to come.</p>
+    <p class="sub">Boards, pipelines and prototypes.</p>
 
     <div class="grid">
-      <article class="card">
-        <div class="shot">Photo placeholder<br>the custom board, assembled</div>
-        <div class="body">
-          <span class="yr">2024 – present · DSO</span>
-          <h3>Custom Zynq-7000 Board</h3>
-          <p>Designed the schematic with high-speed signal integrity in mind and an onboard Ethernet PHY, then brought the board up and got bare-metal PS Ethernet running at 100 Mbps.</p>
-          <div class="tags"><span class="tag">Zynq-7000</span><span class="tag">Schematic</span><span class="tag">Ethernet PHY</span><span class="tag">Bare-metal C</span></div>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="shot">Photo placeholder<br>block diagram of the pipeline</div>
-        <div class="body">
-          <span class="yr">2024 – present · DSO</span>
-          <h3>Streaming Acquisition &amp; DSP Pipeline</h3>
-          <p>Continuous, high-throughput acquisition in VHDL. AXI4-Stream with buffering and backpressure, AXI DMA into DDR, plus QSPI flash and eMMC storage.</p>
-          <div class="tags"><span class="tag">VHDL</span><span class="tag">AXI4-Stream</span><span class="tag">AXI DMA</span><span class="tag">DDR</span></div>
-        </div>
-      </article>
-
       <article class="card">
         <div class="gallery" data-gallery>
           <a class="main-link" href="images/clahe-1.jpg" target="_blank" rel="noopener"><img class="main" src="images/clahe-1.jpg" alt="16-tile CLAHE output produced on the FPGA" width="490" height="366"></a>
@@ -322,27 +307,14 @@ footer { padding-block: 32px 48px; border-top: 1px solid var(--line); color: var
           <a class="doc-link" href="docs/CLAHE_FYP_Report_Nathaniel_Yoong.pdf" target="_blank" rel="noopener">Read the full report <span>PDF · 68 pages</span></a>
         </div>
       </article>
-
       <article class="card">
-        <div class="shot">Photo placeholder<br>a SAR image or the field setup</div>
         <div class="body">
-          <span class="yr">2022 · Internship</span>
-          <h3>FMCW Radar to SAR Imaging</h3>
-          <p>VHDL for raw data flow and interfacing on an FMCW radar, taken from architecture to field trials, then processing the collected data into synthetic aperture radar images.</p>
-          <div class="tags"><span class="tag">VHDL</span><span class="tag">FFT</span><span class="tag">RS422</span><span class="tag">SAR</span></div>
+          <span class="yr">2024 – present · DSO</span>
+          <h3>Custom Zynq-7000 Board</h3>
+          <p>Designed the schematic with high-speed signal integrity in mind and an onboard Ethernet PHY, then brought the board up and got bare-metal PS Ethernet running at 100 Mbps.</p>
+          <div class="tags"><span class="tag">Zynq-7000</span><span class="tag">Schematic</span><span class="tag">Ethernet PHY</span><span class="tag">Bare-metal C</span></div>
         </div>
       </article>
-
-      <article class="card">
-        <div class="shot">Photo placeholder<br>team at the competition</div>
-        <div class="body">
-          <span class="yr">2023 · NTU</span>
-          <h3>Design &amp; Innovation Project, Champion</h3>
-          <p>Led the team that won NTU's Design &amp; Innovation Project Competition. <span class="todo">add what you built</span></p>
-          <div class="tags"><span class="tag">Team lead</span><span class="tag todo">tools</span></div>
-        </div>
-      </article>
-
       <article class="card">
         <div class="gallery" data-gallery>
           <a class="main-link" href="images/aquaponics-1.jpg" target="_blank" rel="noopener"><img class="main" src="images/aquaponics-1.jpg" alt="Controller and network enclosures installed at the farm" style="object-position:50% 45%" width="1200" height="1600"></a>
@@ -358,6 +330,40 @@ footer { padding-block: 32px 48px; border-top: 1px solid var(--line); color: var
           <h3>Smart Aquaponics Farm</h3>
           <p>Youth Expedition Project with Temasek Polytechnic. Sensors for temperature and humidity reporting to a local university over Raspberry Pi, and servo-driven valves for automated watering.</p>
           <div class="tags"><span class="tag">NodeMCU</span><span class="tag">Arduino</span><span class="tag">Raspberry Pi</span><span class="tag">IoT</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="gallery square" data-gallery>
+          <a class="main-link" href="images/dip-4.jpg" target="_blank" rel="noopener" hidden><img class="main" src="images/dip-4.jpg" alt="The TouchnGo room with its RFID readers before the floor went in" width="1600" height="1200"></a>
+          <video class="main-video" src="videos/dip-1.mp4" poster="images/dip-1-poster.jpg" aria-label="The Optics Tachometer room: a joystick-steered mirror sends the laser onto the light sensors" controls playsinline preload="none" width="720" height="1280"></video>
+          <div class="thumbs" role="group" aria-label="Escape room photos and videos">
+            <button type="button" class="is-video" aria-pressed="true" aria-label="Video 1: The Optics Tachometer room: a joystick-steered mirror sends the laser onto the light sensors" data-src="videos/dip-1.mp4" data-alt="The Optics Tachometer room: a joystick-steered mirror sends the laser onto the light sensors" data-pos="50% 50%" data-type="video" data-poster="images/dip-1-poster.jpg"><img src="images/dip-1-thumb.jpg" alt="" loading="lazy" width="120" height="90"></button>
+            <button type="button" class="is-video" aria-pressed="false" aria-label="Video 2: Walkthrough of the escape room, from the RFID room to the bomb" data-src="videos/dip-2.mp4" data-alt="Walkthrough of the escape room, from the RFID room to the bomb" data-pos="50% 50%" data-type="video" data-poster="images/dip-2-poster.jpg"><img src="images/dip-2-thumb.jpg" alt="" loading="lazy" width="120" height="90"></button>
+            <button type="button" class="is-video" aria-pressed="false" aria-label="Video 3: The bomb module counting down from 30 minutes" data-src="videos/dip-3.mp4" data-alt="The bomb module counting down from 30 minutes" data-pos="50% 50%" data-type="video" data-poster="images/dip-3-poster.jpg"><img src="images/dip-3-thumb.jpg" alt="" loading="lazy" width="120" height="90"></button>
+            <button type="button" aria-pressed="false" aria-label="Photo 4: The TouchnGo room with its RFID readers before the floor went in" data-src="images/dip-4.jpg" data-alt="The TouchnGo room with its RFID readers before the floor went in" data-pos="50% 50%"><img src="images/dip-4-thumb.jpg" alt="" loading="lazy" width="120" height="90"></button>
+          </div>
+        </div>
+        <div class="body">
+          <span class="yr">2023 · NTU Design &amp; Innovation Project</span>
+          <h3>Bomb Defusal Escape Room</h3>
+          <p>Led the six-person team that won NTU's Design &amp; Innovation Project Competition with a four-room escape game. I built the Optics Tachometer room, where players steer a laser with a joystick-driven mirror onto the right light sensor to spin up a motor whose RPM is the bomb's code, and co-built the bomb's keypad, electromagnetic locks and countdown.</p>
+          <div class="tags"><span class="tag">Team lead</span><span class="tag">Arduino</span><span class="tag">Raspberry Pi</span><span class="tag">Sensors</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="body">
+          <span class="yr">2024 – present · DSO</span>
+          <h3>Streaming Acquisition &amp; DSP Pipeline</h3>
+          <p>Continuous, high-throughput acquisition in VHDL. AXI4-Stream with buffering and backpressure, AXI DMA into DDR, plus QSPI flash and eMMC storage.</p>
+          <div class="tags"><span class="tag">VHDL</span><span class="tag">AXI4-Stream</span><span class="tag">AXI DMA</span><span class="tag">DDR</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="body">
+          <span class="yr">2022 · Internship</span>
+          <h3>FMCW Radar to SAR Imaging</h3>
+          <p>VHDL for raw data flow and interfacing on an FMCW radar, taken from architecture to field trials, then processing the collected data into synthetic aperture radar images.</p>
+          <div class="tags"><span class="tag">VHDL</span><span class="tag">FFT</span><span class="tag">RS422</span><span class="tag">SAR</span></div>
         </div>
       </article>
     </div>
@@ -463,12 +469,20 @@ footer { padding-block: 32px 48px; border-top: 1px solid var(--line); color: var
 </script>
 <script>
 document.querySelectorAll('[data-gallery]').forEach(function (g) {
-  var main = g.querySelector('.main'), link = g.querySelector('.main-link');
+  var main = g.querySelector('.main'), link = g.querySelector('.main-link'), video = g.querySelector('.main-video');
   var btns = g.querySelectorAll('.thumbs button');
   btns.forEach(function (b) {
     b.addEventListener('click', function () {
-      main.src = b.dataset.src; main.alt = b.dataset.alt; main.style.objectPosition = b.dataset.pos;
-      link.href = b.dataset.src;
+      if (b.dataset.type === 'video' && video) {
+        link.hidden = true; video.hidden = false;
+        if (video.getAttribute('src') !== b.dataset.src) { video.pause(); video.poster = b.dataset.poster; video.src = b.dataset.src; }
+        video.setAttribute('aria-label', b.dataset.alt);
+      } else {
+        if (video) { video.pause(); video.hidden = true; }
+        link.hidden = false;
+        main.src = b.dataset.src; main.alt = b.dataset.alt; main.style.objectPosition = b.dataset.pos;
+        link.href = b.dataset.src;
+      }
       btns.forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
     });
   });
