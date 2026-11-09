@@ -70,8 +70,12 @@ header.nav {
   border-bottom: 1px solid var(--line);
 }
 .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
-.brand { font-family: var(--f-display); font-weight: 700; letter-spacing: .04em; text-decoration: none; }
-.brand span { color: var(--copper); }
+.brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--f-display); font-weight: 700; font-size: 17px; letter-spacing: .02em; text-decoration: none; white-space: nowrap; }
+.brand svg { width: 28px; height: 28px; flex: none; }
+.brand svg rect { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
+.brand svg path { fill: none; stroke: var(--copper); stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+.brand:hover svg rect { stroke: var(--copper-dim); }
+@media (max-width: 480px) { .brand span { display: none; } }
 .nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
 .nav a.l { font-family: var(--f-mono); font-size: 13px; color: var(--muted); text-decoration: none; padding: 4px 8px; border-radius: 4px; }
 .nav a.l:hover { color: var(--fg); background: var(--panel); }
@@ -202,7 +206,7 @@ footer { padding-block: 32px 48px; border-top: 1px solid var(--line); color: var
 <body>
 <header class="nav">
   <div class="wrap">
-    <a class="brand" href="#top">NY<span>_</span></a>
+    <a class="brand" href="#top" aria-label="Nathaniel Yoong, back to top"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="7"/><path d="M5 21.5H11.5V10.5H20.5V21.5H27"/></svg><span>Nathaniel Yoong</span></a>
     <nav aria-label="Sections">
       <ul>
         <li class="opt"><a class="l" href="#about">about</a></li>
