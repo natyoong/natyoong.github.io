@@ -72,13 +72,17 @@ header.nav {
   background: var(--ph); border: 1px dashed var(--muted);
   font-family: var(--f-display); font-size: 28px; font-weight: 600; color: var(--muted);
 }
+img.avatar { display: block; object-fit: cover; border: 2px solid var(--copper-dim); background: var(--ph); }
 .hero h1 { font-family: var(--f-display); font-size: clamp(34px, 7vw, 52px); line-height: 1.05; margin: 0; letter-spacing: .01em; text-wrap: balance; }
 .role { font-family: var(--f-mono); font-size: 14px; color: var(--copper); margin: 6px 0 0; letter-spacing: .02em; }
 .lede { font-size: 18px; color: var(--fg); max-width: 62ch; margin: 0; }
 .lede + p { color: var(--muted); max-width: 62ch; margin: 0; }
-.wave { width: 100%; max-width: 100%; height: 34px; display: block; }
-.wave path { fill: none; stroke: var(--copper-dim); stroke-width: 1.5; }
-.wave text { fill: var(--muted); font-family: var(--f-mono); font-size: 10px; }
+.wave { width: 100%; max-width: 100%; height: 34px; display: block; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
+.wave path { fill: none; stroke: url(#trace); stroke-width: 1.5; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; animation: trace-in 1.6s cubic-bezier(.3,.6,.2,1) .2s both; }
+@keyframes trace-in { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .wave path { animation: none; } }
 
 .links { display: flex; flex-wrap: wrap; gap: 10px; }
 .btn {
@@ -136,6 +140,22 @@ h2 { font-family: var(--f-display); font-size: clamp(26px, 5vw, 34px); margin: 0
 .tag { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 1px 7px; }
 .card.empty { border-style: dashed; background: transparent; }
 
+/* photo gallery inside a card */
+.gallery { background: var(--ph); border-bottom: 1px solid var(--line); }
+.gallery .main-link { display: block; }
+.gallery .main { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; object-fit: cover; height: auto; }
+.thumbs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; padding: 8px; background: var(--panel); }
+.thumbs button { padding: 0; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: var(--ph); cursor: pointer; opacity: .55; transition: opacity .15s, border-color .15s; }
+.thumbs button:hover { opacity: .85; }
+.thumbs button[aria-pressed="true"] { opacity: 1; border-color: var(--copper); }
+.thumbs img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+@media (prefers-reduced-motion: reduce) { .thumbs button { transition: none; } }
+
+.doc-link { justify-self: start; display: inline-flex; align-items: baseline; gap: 8px; margin-top: 6px; font-family: var(--f-mono); font-size: 13px; color: var(--copper); text-decoration: none; }
+.doc-link::after { content: "\2197"; }
+.doc-link span { color: var(--muted); font-size: 12px; }
+.doc-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
 /* education + awards */
 .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 28px; }
 .edu h3 { font-family: var(--f-display); font-size: 19px; margin: 0; }
@@ -179,16 +199,16 @@ footer { padding-block: 32px 48px; border-top: 1px solid var(--line); color: var
 <main class="wrap" id="top">
   <section class="hero" id="about">
     <div class="hero-top">
-      <div class="avatar" title="Placeholder: add your photo">NY</div>
+      <img class="avatar" src="images/avatar.jpg" alt="Nathaniel Yoong" width="96" height="96">
       <div>
         <h1 data-scramble>Nathaniel Yoong</h1>
         <p class="role">FPGA &amp; Firmware Engineer · DSO National Laboratories</p>
       </div>
     </div>
 
-    <svg class="wave" viewBox="0 0 600 34" preserveAspectRatio="none" aria-hidden="true">
-      <text x="0" y="12">clk</text>
-      <path d="M30 26 H50 V8 H70 V26 H90 V8 H110 V26 H130 V8 H150 V26 H170 V8 H190 V26 H210 V8 H230 V26 H250 V8 H270 V26 H290 V8 H310 V26 H330 V8 H350 V26 H370 V8 H390 V26 H410 V8 H430 V26 H450 V8 H470 V26 H490 V8 H510 V26 H530 V8 H550 V26 H570 V8 H590 V26 H600"/>
+    <svg class="wave" viewBox="0 0 760 34" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs><linearGradient id="trace" x1="0" x2="760" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" style="stop-color:var(--copper-dim)"/><stop offset="1" style="stop-color:var(--copper)"/></linearGradient></defs>
+      <path pathLength="1" d="M0 26 H20 V8 H40 V26 H60 V8 H80 V26 H100 V8 H120 V26 H140 V8 H160 V26 H180 V8 H200 V26 H220 V8 H240 V26 H260 V8 H280 V26 H300 V8 H320 V26 H340 V8 H360 V26 H380 V8 H400 V26 H420 V8 H440 V26 H460 V8 H480 V26 H500 V8 H520 V26 H540 V8 H560 V26 H580 V8 H600 V26 H620 V8 H640 V26 H660 V8 H680 V26 H700 V8 H720 V26 H740 V8 H760"/>
     </svg>
 
     <p class="lede">I build on Xilinx Zynq SoCs end to end: VHDL RTL in the programmable logic, IP integration in Vivado block designs, and bare-metal C on the Arm cores, with AXI DMA moving data between PS and PL. My focus is continuous, high-throughput data acquisition and DSP streaming.</p>
@@ -199,6 +219,10 @@ footer { padding-block: 32px 48px; border-top: 1px solid var(--line); color: var
       <a class="btn" href="https://github.com/natyoong/natyoong.github.io" target="_blank" rel="noopener">
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
         GitHub
+      </a>
+      <a class="btn" href="https://gitlab.com/personal-projects5834243" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m23.6 9.59-.03-.09L20.3.98a.85.85 0 0 0-.34-.4.87.87 0 0 0-1 .05.87.87 0 0 0-.29.44l-2.2 6.75H7.54L5.33.97a.86.86 0 0 0-.29-.44.87.87 0 0 0-1-.05.86.86 0 0 0-.34.4L.43 9.5l-.03.09a6.07 6.07 0 0 0 2.01 7.01l.01.01.03.02 4.98 3.73 2.46 1.86 1.5 1.13a1.01 1.01 0 0 0 1.22 0l1.5-1.13 2.46-1.86 5.01-3.75.01-.01a6.07 6.07 0 0 0 2.01-7z"/></svg>
+        GitLab
       </a>
       <a class="btn" href="https://www.linkedin.com/in/nathaniel-yoong-28499628a" target="_blank" rel="noopener">
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.15C0 .52.52 0 1.18 0h13.64C15.48 0 16 .52 16 1.15v13.7c0 .63-.52 1.15-1.18 1.15H1.18C.52 16 0 15.48 0 14.85V1.15zm4.94 12.25V6.17H2.54v7.23h2.4zM3.74 5.18c.84 0 1.36-.55 1.36-1.25-.02-.71-.52-1.25-1.34-1.25-.82 0-1.36.54-1.36 1.25 0 .7.52 1.25 1.33 1.25h.01zm4.91 8.22V9.36c0-.22.02-.43.08-.58.17-.43.57-.88 1.23-.88.87 0 1.22.66 1.22 1.64v3.86h2.4V9.25c0-2.22-1.18-3.26-2.76-3.26-1.28 0-1.84.71-2.16 1.2v.03h-.02l.02-.03V6.17h-2.4c.03.68 0 7.23 0 7.23h2.4z"/></svg>
@@ -282,12 +306,20 @@ footer { padding-block: 32px 48px; border-top: 1px solid var(--line); color: var
       </article>
 
       <article class="card">
-        <div class="shot">Photo placeholder<br>before / after CLAHE frames</div>
+        <div class="gallery" data-gallery>
+          <a class="main-link" href="images/clahe-1.jpg" target="_blank" rel="noopener"><img class="main" src="images/clahe-1.jpg" alt="16-tile CLAHE output produced on the FPGA" width="490" height="366"></a>
+          <div class="thumbs" role="group" aria-label="CLAHE project images">
+            <button type="button" aria-pressed="true" aria-label="Photo 1: 16-tile CLAHE output produced on the FPGA" data-src="images/clahe-1.jpg" data-alt="16-tile CLAHE output produced on the FPGA" data-pos="50% 50%"><img src="images/clahe-1-thumb.jpg" alt="" loading="lazy" width="120" height="90"></button>
+            <button type="button" aria-pressed="false" aria-label="Photo 2: The original 14-bit infrared frame before enhancement" data-src="images/clahe-2.jpg" data-alt="The original 14-bit infrared frame before enhancement" data-pos="50% 50%"><img src="images/clahe-2-thumb.jpg" alt="" loading="lazy" width="120" height="90"></button>
+            <button type="button" aria-pressed="false" aria-label="Photo 3: The UltraZed-EG board with Zynq UltraScale+ used for the project" data-src="images/clahe-3.jpg" data-alt="The UltraZed-EG board with Zynq UltraScale+ used for the project" data-pos="50% 50%"><img src="images/clahe-3-thumb.jpg" alt="" loading="lazy" width="120" height="90"></button>
+          </div>
+        </div>
         <div class="body">
-          <span class="yr">2023 · Internship</span>
-          <h3>Real-time CLAHE on FPGA</h3>
-          <p>Contrast-limited adaptive histogram equalisation in Vivado HLS on Zynq UltraScale+, tuned to hit real-time throughput and latency, with C handling DDR3 reads and writes.</p>
-          <div class="tags"><span class="tag">Vivado HLS</span><span class="tag">Zynq UltraScale+</span><span class="tag">Image processing</span></div>
+          <span class="yr">2023 – 2024 · NTU Final Year Project</span>
+          <h3>CLAHE on Zynq UltraScale+</h3>
+          <p>My final year project, co-supervised by DSO. Three HLS cores linked by AXI4-Stream turn 14-bit infrared frames into contrast-enhanced 8-bit images at about 38 fps, 3 to 5 times faster than running on the Arm cores alone.</p>
+          <div class="tags"><span class="tag">Vivado HLS</span><span class="tag">AXI4-Stream</span><span class="tag">Zynq UltraScale+</span><span class="tag">Image processing</span></div>
+          <a class="doc-link" href="docs/CLAHE_FYP_Report_Nathaniel_Yoong.pdf" target="_blank" rel="noopener">Read the full report <span>PDF · 68 pages</span></a>
         </div>
       </article>
 
@@ -312,7 +344,15 @@ footer { padding-block: 32px 48px; border-top: 1px solid var(--line); color: var
       </article>
 
       <article class="card">
-        <div class="shot">Photo placeholder<br>aquaponics farm, Philippines</div>
+        <div class="gallery" data-gallery>
+          <a class="main-link" href="images/aquaponics-1.jpg" target="_blank" rel="noopener"><img class="main" src="images/aquaponics-1.jpg" alt="Controller and network enclosures installed at the farm" style="object-position:50% 45%" width="1200" height="1600"></a>
+          <div class="thumbs" role="group" aria-label="Smart Aquaponics Farm photos">
+            <button type="button" aria-pressed="true" aria-label="Photo 1: Controller and network enclosures installed at the farm" data-src="images/aquaponics-1.jpg" data-alt="Controller and network enclosures installed at the farm" data-pos="50% 45%"><img src="images/aquaponics-1-thumb.jpg" alt="" loading="lazy" width="120" height="90"></button>
+            <button type="button" aria-pressed="false" aria-label="Photo 2: Assembling the enclosures with the team before installation" data-src="images/aquaponics-2.jpg" data-alt="Assembling the enclosures with the team before installation" data-pos="50% 50%"><img src="images/aquaponics-2-thumb.jpg" alt="" loading="lazy" width="120" height="90"></button>
+            <button type="button" aria-pressed="false" aria-label="Photo 3: Gateway box with the Raspberry Pi and router, beside a motor control box" data-src="images/aquaponics-3.jpg" data-alt="Gateway box with the Raspberry Pi and router, beside a motor control box" data-pos="50% 50%"><img src="images/aquaponics-3-thumb.jpg" alt="" loading="lazy" width="120" height="90"></button>
+            <button type="button" aria-pressed="false" aria-label="Photo 4: Pumps and probe wired to the control board" data-src="images/aquaponics-4.jpg" data-alt="Pumps and probe wired to the control board" data-pos="50% 35%"><img src="images/aquaponics-4-thumb.jpg" alt="" loading="lazy" width="120" height="90"></button>
+          </div>
+        </div>
         <div class="body">
           <span class="yr">2019 · Philippines</span>
           <h3>Smart Aquaponics Farm</h3>
@@ -420,6 +460,19 @@ footer { padding-block: 32px 48px; border-top: 1px solid var(--line); color: var
     try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
   });
 })();
+</script>
+<script>
+document.querySelectorAll('[data-gallery]').forEach(function (g) {
+  var main = g.querySelector('.main'), link = g.querySelector('.main-link');
+  var btns = g.querySelectorAll('.thumbs button');
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      main.src = b.dataset.src; main.alt = b.dataset.alt; main.style.objectPosition = b.dataset.pos;
+      link.href = b.dataset.src;
+      btns.forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+    });
+  });
+});
 </script>
 </body>
 </html>
